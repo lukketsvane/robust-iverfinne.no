@@ -195,16 +195,7 @@ function ContentSection1() {
         </div>
 
         {/* Image in bottom right */}
-        <div className="mt-auto flex justify-center">
-          <div className="w-[400px] aspect-square relative">
-            <Image
-              src="/pink-shell.jpeg"
-              alt="Beautiful pink and orange shell"
-              fill
-              className="object-cover"
-            />
-          </div>
-        </div>
+        
       </div>
     </section>
   );
