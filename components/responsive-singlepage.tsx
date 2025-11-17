@@ -33,10 +33,10 @@ function BannerHeader() {
         {/* Right Banner - Pink */}
         <div className="w-[120px] bg-[#ffc2c2] flex items-center justify-center relative">
           <Image
-            src="/logo.png"
+            src="/robust-logo.png"
             alt="ROBUST Logo"
-            width={100}
-            height={40}
+            width={80}
+            height={80}
             className="object-contain"
           />
         </div>
@@ -111,10 +111,10 @@ function ContentSection1({ activeSection }: { activeSection: string }) {
       {/* Pink section with image */}
       <div className="flex-1 bg-[#ffc2c2] p-8 md:p-16 flex flex-col items-center justify-center">
         <div className="max-w-[600px] w-full">
-          <div className="aspect-[559/481] w-full relative mb-8">
+          <div className="aspect-[4/3] w-full relative mb-8">
             <Image
-              src="/image1.png"
-              alt="Sustainable city illustration"
+              src="/white-shell.jpeg"
+              alt="Shell on green background"
               fill
               className="object-cover rounded-lg"
             />
@@ -169,10 +169,10 @@ function ContentSection2({ activeSection }: { activeSection: string }) {
       {/* Pink section with image */}
       <div className="flex-1 bg-[#ffc2c2] p-8 md:p-16 flex flex-col items-center justify-center">
         <div className="max-w-[600px] w-full">
-          <div className="aspect-[559/481] w-full relative mb-8">
+          <div className="aspect-[4/3] w-full relative mb-8">
             <Image
-              src="/image2.png"
-              alt="Community collaboration"
+              src="/penguins.jpeg"
+              alt="Two penguins together"
               fill
               className="object-cover rounded-lg"
             />
@@ -187,10 +187,21 @@ function ContentSection2({ activeSection }: { activeSection: string }) {
 }
 
 // Profile Card Component
-function ProfileCard({ name, description }: { name: string; description: string }) {
+function ProfileCard({ name, description, hasPhoto }: { name: string; description: string; hasPhoto?: boolean }) {
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm">
-      <div className="w-20 h-20 bg-[#e3160b] rounded-full mb-4 mx-auto" />
+      {hasPhoto ? (
+        <div className="w-20 h-20 rounded-full mb-4 mx-auto overflow-hidden relative">
+          <Image
+            src="/profile-photo.png"
+            alt={name}
+            fill
+            className="object-cover"
+          />
+        </div>
+      ) : (
+        <div className="w-20 h-20 bg-[#e3160b] rounded-full mb-4 mx-auto" />
+      )}
       <h3 className="font-['JetBrains_Mono',monospace] font-bold text-[#e3160b] text-center text-lg mb-3">
         {name}
       </h3>
@@ -204,7 +215,7 @@ function ProfileCard({ name, description }: { name: string; description: string 
 // Team Section
 function TeamSection({ activeSection }: { activeSection: string }) {
   const teamMembers = [
-    { name: "Christina Lund", description: "Aula er en digital plattform som forenkler deltakelse i lokaldemokratiet. Innbyggere kan dele sine tanker og kunnskap når det passer dem." },
+    { name: "Christina Lund", description: "Aula er en digital plattform som forenkler deltakelse i lokaldemokratiet. Innbyggere kan dele sine tanker og kunnskap når det passer dem.", hasPhoto: true },
     { name: "Eline Mannino", description: "Aula er en digital plattform som gjør det lett å engasjere seg i lokaldemokratiet. Innbyggere kan bidra med innspill og kunnskap når det passer dem." },
     { name: "Thomas Røkås", description: "Aula er en digital plattform som gjør det enkelt å være med i lokaldemokratiet. Innbyggere kan dele sine meninger og kunnskap når det passer dem." },
     { name: "Sigrid Løvlie", description: "Aula er en digital plattform som gjør det lett å delta i lokaldemokratiet. Innbyggere kan dele innspill og kunnskap når det passer dem." },
@@ -217,7 +228,7 @@ function TeamSection({ activeSection }: { activeSection: string }) {
       <div className="flex-1 bg-[#ffc2c2] p-8 md:p-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1200px] mx-auto">
           {teamMembers.map((member, index) => (
-            <ProfileCard key={index} name={member.name} description={member.description} />
+            <ProfileCard key={index} name={member.name} description={member.description} hasPhoto={member.hasPhoto} />
           ))}
         </div>
       </div>
@@ -253,10 +264,10 @@ function InspirationSection({ activeSection }: { activeSection: string }) {
     <section className="relative min-h-[400px] flex items-center justify-center bg-[#ffc2c2]">
       <div className="absolute inset-0">
         <Image
-          src="/snail.png"
-          alt="Snail shell pattern"
+          src="/nautilus-shell.jpeg"
+          alt="Nautilus shell cross-section"
           fill
-          className="object-cover opacity-30"
+          className="object-cover opacity-40"
         />
       </div>
       <div className="relative z-10 max-w-[800px] mx-auto px-8 py-16 text-center">
