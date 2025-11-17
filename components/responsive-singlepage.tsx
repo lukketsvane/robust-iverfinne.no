@@ -78,12 +78,12 @@ function DesktopNavigation({ activeItem }: { activeItem: string }) {
   ];
 
   return (
-    <nav className="hidden md:flex flex-col gap-8">
+    <nav className="hidden md:flex flex-row gap-12">
       {navItems.map((item) => (
         <Link
           key={item.name}
           href={item.href}
-          className={`font-['JetBrains_Mono',monospace] text-white text-[20px] transition-all duration-300 hover:opacity-80 whitespace-nowrap relative text-left font-['JetBrains_Mono',monospace] ${
+          className={`font-['JetBrains_Mono',monospace] text-white text-[20px] transition-all duration-300 hover:opacity-80 whitespace-nowrap relative text-left ${
             activeItem === item.name
               ? "font-bold"
               : "font-normal"
@@ -100,7 +100,7 @@ function DesktopNavigation({ activeItem }: { activeItem: string }) {
 function ContentSection1({ activeSection }: { activeSection: string }) {
   return (
     <section id="om-oss" className="flex flex-col md:flex-row min-h-screen">
-      {/* Pink section - Left on desktop */}
+      {/* Pink section - Left on desktop, equal width */}
       <div className="flex-1 bg-[#ffc2c2] flex flex-col">
         {/* Mobile layout */}
         <div className="md:hidden flex flex-col">
@@ -140,7 +140,7 @@ function ContentSection1({ activeSection }: { activeSection: string }) {
         </div>
       </div>
 
-      {/* Red section with logo, navigation and text - Right on desktop */}
+      {/* Red section - Right on desktop, equal width */}
       <div className="hidden md:flex flex-1 bg-[#e3160b] p-16 flex-col relative">
         {/* Logo in top right corner */}
         <div className="absolute top-8 right-8">
@@ -172,7 +172,7 @@ function ContentSection1({ activeSection }: { activeSection: string }) {
           
           <Link 
             href="/om-oss"
-            className="mt-8 inline-flex items-center justify-center bg-white text-[#e3160b] font-['JetBrains_Mono',monospace] font-bold px-8 py-3 rounded hover:bg-[#ffc2c2] transition-colors w-fit"
+            className="mt-8 text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity w-fit"
           >
             Les mer
           </Link>
@@ -198,7 +198,7 @@ function ContentSection1({ activeSection }: { activeSection: string }) {
 function ContentSection2({ activeSection }: { activeSection: string }) {
   return (
     <section id="prosjekter" className="flex flex-col md:flex-row min-h-screen">
-      {/* Red section with navigation - Left on desktop */}
+      {/* Red section with navigation - Left on desktop, equal width */}
       <div className="hidden md:flex flex-1 bg-[#e3160b] p-16 flex-col">
         <div className="mb-16">
           <DesktopNavigation activeItem={activeSection} />
@@ -219,7 +219,7 @@ function ContentSection2({ activeSection }: { activeSection: string }) {
           
           <Link 
             href="/prosjekter"
-            className="mt-8 inline-flex items-center justify-center bg-white text-[#e3160b] font-['JetBrains_Mono',monospace] font-bold px-8 py-3 rounded hover:bg-[#ffc2c2] transition-colors w-fit"
+            className="mt-8 text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity w-fit"
           >
             Les mer
           </Link>
@@ -254,7 +254,7 @@ function ContentSection2({ activeSection }: { activeSection: string }) {
         </div>
       </div>
 
-      {/* Pink section - Right on desktop */}
+      {/* Pink section - Right on desktop, equal width */}
       <div className="hidden md:flex flex-1 bg-[#ffc2c2] p-16 flex-col items-center justify-center">
         <div className="max-w-[500px]">
           <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
@@ -312,8 +312,8 @@ function TeamSection({ activeSection }: { activeSection: string }) {
 
   return (
     <section id="i-media" className="flex flex-col md:flex-row min-h-screen">
-      {/* Red section with navigation - Left on desktop */}
-      <div className="hidden md:flex w-[400px] bg-[#e3160b] p-16 flex-col">
+      {/* Red section with navigation - Left on desktop, equal width */}
+      <div className="hidden md:flex flex-1 bg-[#e3160b] p-16 flex-col">
         <div className="mb-16">
           <DesktopNavigation activeItem={activeSection} />
         </div>
@@ -327,14 +327,14 @@ function TeamSection({ activeSection }: { activeSection: string }) {
           
           <Link 
             href="/i-media"
-            className="mt-8 inline-flex items-center justify-center bg-white text-[#e3160b] font-['JetBrains_Mono',monospace] font-bold px-8 py-3 rounded hover:bg-[#ffc2c2] transition-colors w-fit"
+            className="mt-8 text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity w-fit"
           >
             Les mer
           </Link>
         </div>
       </div>
 
-      {/* Pink section with profiles - Right on desktop */}
+      {/* Pink section with profiles - Right on desktop, equal width */}
       <div className="flex-1 bg-[#ffc2c2] p-6 md:p-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-[1200px] mx-auto">
           {teamMembers.map((member, index) => (
