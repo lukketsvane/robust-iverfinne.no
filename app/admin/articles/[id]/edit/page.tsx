@@ -2,6 +2,8 @@ import { cookies } from 'next/headers';
 import { redirect, notFound } from 'next/navigation';
 import { createClient } from "@/lib/supabase/server";
 import { ArticleEditor } from "@/components/admin/article-editor";
+import { getUserFromSession } from '@/lib/auth';
+import { ArticleHistory } from "@/components/admin/article-history";
 
 export default async function EditArticlePage({
   params,
@@ -14,6 +16,12 @@ export default async function EditArticlePage({
   const adminSession = cookieStore.get('admin-session');
   
   if (!adminSession) {
+    redirect("/admin/login");
+  }
+
+  const currentUser = await getUserFromSession(adminSession.value);
+  
+  if (!currentUser) {
     redirect("/admin/login");
   }
 
@@ -36,8 +44,10 @@ export default async function EditArticlePage({
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <ArticleEditor article={article} />
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <ArticleEditor article={article} currentUser={currentUser} />
+        
+        <ArticleHistory articleId={id} />
       </main>
     </div>
   );

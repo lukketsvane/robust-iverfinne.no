@@ -6,16 +6,17 @@ export async function POST(request: NextRequest) {
   try {
     const { username, password } = await request.json();
 
-    if (!validateCredentials(username, password)) {
+    const user = await validateCredentials(username, password);
+    
+    if (!user) {
       return NextResponse.json(
         { error: 'Ugyldig brukernavn eller passord' },
         { status: 401 }
       );
     }
 
-    // Set secure session cookie
     const cookieStore = await cookies();
-    cookieStore.set('admin-session', 'authenticated', {
+    cookieStore.set('admin-session', JSON.stringify(user), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
       path: '/',
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, user });
   } catch (error) {
     return NextResponse.json(
       { error: 'En feil oppstod' },

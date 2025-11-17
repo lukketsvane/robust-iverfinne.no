@@ -1,12 +1,19 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { ArticleEditor } from "@/components/admin/article-editor";
+import { getUserFromSession } from '@/lib/auth';
 
 export default async function NewArticlePage() {
   const cookieStore = await cookies();
   const adminSession = cookieStore.get('admin-session');
   
   if (!adminSession) {
+    redirect("/admin/login");
+  }
+
+  const currentUser = await getUserFromSession(adminSession.value);
+  
+  if (!currentUser) {
     redirect("/admin/login");
   }
 
@@ -19,7 +26,7 @@ export default async function NewArticlePage() {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <ArticleEditor />
+        <ArticleEditor currentUser={currentUser} />
       </main>
     </div>
   );

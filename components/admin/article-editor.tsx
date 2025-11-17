@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { useRouter } from 'next/navigation';
 import { ImageUpload } from "./image-upload";
 import { MarkdownEditor } from "./markdown-editor";
+import type { AdminUser } from "@/lib/auth";
 
 type Article = {
   id: string;
@@ -25,10 +26,10 @@ type Article = {
 
 type ArticleEditorProps = {
   article?: Article;
-  userId?: string;
+  currentUser: AdminUser;
 };
 
-export function ArticleEditor({ article, userId }: ArticleEditorProps) {
+export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
   const router = useRouter();
   const [title, setTitle] = useState(article?.title || "");
   const [slug, setSlug] = useState(article?.slug || "");
@@ -73,17 +74,50 @@ export function ArticleEditor({ article, userId }: ArticleEditorProps) {
       featured_image_url: featuredImage || null,
       published,
       category: category || null,
-      author_id: userId || null,
+      author_id: currentUser.id,
+      last_modified_by: currentUser.id,
+      last_modified_by_username: currentUser.username,
     };
 
     let error;
+    let savedArticleId = article?.id;
+    
     if (article) {
       ({ error } = await supabase
         .from("articles")
         .update(articleData)
         .eq("id", article.id));
     } else {
-      ({ error } = await supabase.from("articles").insert(articleData));
+      const { data, error: insertError } = await supabase
+        .from("articles")
+        .insert(articleData)
+        .select('id')
+        .single();
+      
+      error = insertError;
+      if (data) savedArticleId = data.id;
+    }
+
+    if (!error && savedArticleId) {
+      const changeType = article 
+        ? (published !== article.published 
+            ? (published ? 'published' : 'unpublished') 
+            : 'updated')
+        : 'created';
+
+      await supabase.from('article_history').insert({
+        article_id: savedArticleId,
+        changed_by_user_id: currentUser.id,
+        changed_by_username: currentUser.username,
+        title,
+        slug,
+        content,
+        excerpt,
+        featured_image_url: featuredImage,
+        published,
+        category,
+        change_type: changeType,
+      });
     }
 
     setSaving(false);

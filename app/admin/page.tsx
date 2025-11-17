@@ -6,12 +6,19 @@ import { ArticleList } from "@/components/admin/article-list";
 import { AnalyticsDashboard } from "@/components/admin/analytics-dashboard";
 import { createClient } from "@/lib/supabase/server";
 import { Eye, LogOut, Plus, FileText, TrendingUp } from 'lucide-react';
+import { getUserFromSession } from '@/lib/auth';
 
 export default async function AdminDashboard() {
   const cookieStore = await cookies();
   const adminSession = cookieStore.get('admin-session');
   
   if (!adminSession) {
+    redirect("/admin/login");
+  }
+
+  const currentUser = await getUserFromSession(adminSession.value);
+  
+  if (!currentUser) {
     redirect("/admin/login");
   }
 
@@ -37,7 +44,12 @@ export default async function AdminDashboard() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-[#e3160b]">ROBUST</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl font-bold text-[#e3160b]">ROBUST</h1>
+            <span className="text-sm text-gray-500">
+              Logget inn som: <span className="font-medium">{currentUser.username}</span>
+            </span>
+          </div>
           <div className="flex gap-2">
             <Button asChild variant="outline" size="sm" className="gap-2">
               <Link href="/">

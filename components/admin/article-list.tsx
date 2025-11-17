@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { nb } from "date-fns/locale";
-import { Edit, Eye, Trash2 } from 'lucide-react';
+import { Edit, Eye, Trash2, User } from 'lucide-react';
 
 type Article = {
   id: string;
@@ -19,6 +19,7 @@ type Article = {
   category: string | null;
   created_at: string;
   updated_at: string;
+  last_modified_by_username: string | null;
 };
 
 export function ArticleList({ initialArticles }: { initialArticles: Article[] }) {
@@ -141,9 +142,20 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
                         {article.published ? "Publisert" : "Utkast"}
                       </Badge>
                     </div>
-                    <p className="text-xs text-gray-500">
-                      Oppdatert {formatDistanceToNow(new Date(article.updated_at), { addSuffix: true, locale: nb })}
-                    </p>
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <span>
+                        Oppdatert {formatDistanceToNow(new Date(article.updated_at), { addSuffix: true, locale: nb })}
+                      </span>
+                      {article.last_modified_by_username && (
+                        <>
+                          <span>•</span>
+                          <span className="flex items-center gap-1">
+                            <User className="h-3 w-3" />
+                            {article.last_modified_by_username}
+                          </span>
+                        </>
+                      )}
+                    </div>
                   </div>
                   <div className="flex gap-1 shrink-0 flex-nowrap">
                     <Button asChild size="sm" variant="outline" className="h-8 w-8 p-0 flex-shrink-0">
