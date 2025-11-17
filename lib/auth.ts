@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server';
-import bcrypt from 'bcryptjs';
 
 export type AdminUser = {
   id: string;
@@ -15,7 +14,7 @@ export async function validateCredentials(
   
   const { data: user, error } = await supabase
     .from('admin_users')
-    .select('id, username, password_hash, full_name')
+    .select('id, username, password, full_name')
     .eq('username', username)
     .single();
 
@@ -23,9 +22,7 @@ export async function validateCredentials(
     return null;
   }
 
-  const isValid = await bcrypt.compare(password, user.password_hash);
-  
-  if (!isValid) {
+  if (password !== user.password) {
     return null;
   }
 
