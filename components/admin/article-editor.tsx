@@ -142,8 +142,10 @@ export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
         title: "Lagret!",
         description: article ? "Artikkelen ble oppdatert" : "Artikkelen ble opprettet",
       });
-      router.push("/admin");
-      router.refresh();
+      // Refresh the page data without navigation for new articles
+      if (!article) {
+        router.refresh();
+      }
     }
   };
 
