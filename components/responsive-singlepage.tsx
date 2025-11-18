@@ -280,14 +280,31 @@ function ProfileCard({ name, description, hasPhoto, photoUrl }: {
 function TeamMembersSection({ teamMembers }: { teamMembers: any[] }) {
   return (
     <section className="flex flex-col md:flex-row min-h-screen">
-      {/* Pink section with profiles - Left on desktop */}
-      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16">
+      {/* Pink section with text/image now on LEFT */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16 flex flex-col items-center justify-center">
+        <div className="max-w-[500px]">
+          <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
+            Vi er et kunnskapskollektiv som jobber for å spre kunnskap om et postvekst samfunn.
+          </p>
+          <div className="aspect-square w-full max-w-[450px] mx-auto relative">
+            <Image
+              src="/images/design-mode/michelle-atkinson-aYgTkQRVUAk-unsplash%204.png"
+              alt="ROBUST Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Red section with team members now on RIGHT */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16">
         <div className="flex flex-col gap-4 md:gap-6 max-w-[600px] mx-auto">
-          <h2 className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[32px] leading-relaxed mb-4 font-bold">
+          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[32px] leading-relaxed mb-4 font-bold">
             Våre medlemmer
           </h2>
           {teamMembers.length === 0 ? (
-            <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-center p-8">
+            <p className="font-['JetBrains_Mono',monospace] text-white text-center p-8">
               Laster medlemmer...
             </p>
           ) : (
@@ -301,23 +318,6 @@ function TeamMembersSection({ teamMembers }: { teamMembers: any[] }) {
               />
             ))
           )}
-        </div>
-      </div>
-
-      {/* Red section - Right on desktop */}
-      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16 flex flex-col items-center justify-center">
-        <div className="max-w-[500px]">
-          <p className="font-['JetBrains_Mono',monospace] text-white text-[18px] leading-relaxed mb-12 text-left">
-            Vi er et kunnskapskollektiv som jobber for å spre kunnskap om et postvekst samfunn.
-          </p>
-          <div className="aspect-square w-full max-w-[450px] mx-auto relative">
-            <Image
-              src="/robust-logo.png"
-              alt="ROBUST Logo"
-              fill
-              className="object-contain"
-            />
-          </div>
         </div>
       </div>
     </section>
@@ -340,41 +340,31 @@ function IMediaSection() {
 
   return (
     <section id="i-media" className="flex flex-col md:flex-row min-h-screen">
-      {/* Left section - Pink background with articles */}
-      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16 bg-[rgba(227,22,11,1)]">
-        <div className="max-w-[600px] mx-auto">
-          {articles.length === 0 ? (
-            <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-center p-8">
-              Laster medieoppslag...
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 gap-6">
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16">
+        <div className="flex-1 flex flex-col justify-center max-w-[600px] mx-auto">
+          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[32px] leading-relaxed mb-8 font-bold">
+            I media
+          </h2>
+          <p className="font-['JetBrains_Mono',monospace] text-white text-[18px] leading-relaxed mb-6">
+            Se hvor ROBUST har vært omtalt i media og våre egne oppslag.
+          </p>
+          
+          <Link 
+            href="/i-media"
+            className="mt-4 text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity w-fit mb-8"
+          >
+            Se alle oppslag
+          </Link>
+
+          {articles.length > 0 && (
+            <div className="flex flex-col gap-3">
               {articles.slice(0, 3).map((article) => (
                 <Link 
                   key={article.id}
                   href={`/artikkel/${article.slug}`}
-                  className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                  className="text-white font-['JetBrains_Mono',monospace] text-[16px] underline hover:opacity-80 transition-opacity"
                 >
-                  {article.featured_image_url && (
-                    <div className="aspect-video relative">
-                      <Image
-                        src={article.featured_image_url || "/placeholder.svg"}
-                        alt={article.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  )}
-                  <div className="p-4">
-                    <h3 className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-lg font-bold mb-2">
-                      {article.title}
-                    </h3>
-                    {article.excerpt && (
-                      <p className="font-['JetBrains_Mono',monospace] text-gray-700 text-sm line-clamp-2">
-                        {article.excerpt}
-                      </p>
-                    )}
-                  </div>
+                  {article.title}
                 </Link>
               ))}
             </div>
@@ -382,22 +372,20 @@ function IMediaSection() {
         </div>
       </div>
 
-      {/* Right section - Red background */}
-      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16 bg-[rgba(255,194,194,1)]">
-        <div className="flex-1 flex flex-col justify-center max-w-[600px] mx-auto text-foreground">
-          <h2 className="font-['JetBrains_Mono',monospace] text-[32px] leading-relaxed mb-8 font-bold text-[rgba(227,22,11,1)]">
-            I media
-          </h2>
-          <p className="font-['JetBrains_Mono',monospace] text-[18px] leading-relaxed mb-6 text-secondary-foreground">
-            Se hvor ROBUST har vært omtalt i media og våre egne oppslag.
+      {/* Right section - Pink background */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16">
+        <div className="flex flex-col items-center justify-center h-full max-w-[500px] mx-auto">
+          <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
+            Her finner du oversikt over medieoppslag og artikler fra ROBUST.
           </p>
-          
-          <Link 
-            href="/i-media"
-            className="mt-4 font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity w-fit text-secondary-foreground"
-          >
-            Se alle oppslag
-          </Link>
+          <div className="aspect-square w-full max-w-[450px] mx-auto relative">
+            <Image
+              src="/white-shell.jpeg"
+              alt="Shell on green background"
+              fill
+              className="object-contain"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -446,20 +434,25 @@ function InspirationSection({ activeSection }: { activeSection: string }) {
 // Footer Component
 function Footer({ activeSection }: { activeSection: string }) {
   return (
-    <footer id="kontakt" className="bg-[#e3160b] text-white py-12 px-8 bg-[rgba(63,0,0,1)]">
+    <footer id="kontakt" className="bg-[#3f0000] text-white py-12 px-8">
       <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row gap-8 items-center justify-between">
-        <div className="flex items-center gap-3">
+        <a 
+          href="https://www.linkedin.com/company/foreningen-robust/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+        >
           <Linkedin className="w-6 h-6" />
           <span className="font-['JetBrains_Mono',monospace] text-lg">
             Følg oss på LinkedIn
           </span>
-        </div>
+        </a>
         <div className="font-['JetBrains_Mono',monospace] text-center md:text-right space-y-2">
           <p className="flex items-center gap-2 justify-center md:justify-end">
             <Mail className="w-5 h-5" />
             E-post: kontakt@foreningenrobust.no
           </p>
-          <p>Org.nummer: 123 456 789</p>
+          <p>Org.nummer: 931 876 821</p>
         </div>
       </div>
     </footer>
