@@ -16,8 +16,16 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Foreningen ROBUST - Post-kapitalistisk fremtid',
-  description: 'En kunnskapskollektiv om degrowth og post-kapitalistiske fremtider',
+  metadataBase: new URL('https://robust.iverfinne.no'),
+  title: {
+    default: 'Foreningen ROBUST - Post-kapitalistisk fremtid',
+    template: '%s | Foreningen ROBUST',
+  },
+  description: 'En kunnskapskollektiv om degrowth, post-kapitalistiske fremtider og bærekraftig samfunnsutvikling. ROBUST arbeider for systemendring gjennom forskning, dialog og handling.',
+  keywords: ['degrowth', 'post-kapitalisme', 'bærekraft', 'ROBUST', 'Norge', 'samfunnsendring', 'klimakrise', 'økologi', 'solidaritet'],
+  authors: [{ name: 'Foreningen ROBUST' }],
+  creator: 'Foreningen ROBUST',
+  publisher: 'Foreningen ROBUST',
   generator: 'v0.app',
   applicationName: 'ROBUST',
   appleWebApp: {
@@ -27,6 +35,39 @@ export const metadata: Metadata = {
   },
   formatDetection: {
     telephone: false,
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'no_NO',
+    url: 'https://robust.iverfinne.no',
+    siteName: 'Foreningen ROBUST',
+    title: 'Foreningen ROBUST - Post-kapitalistisk fremtid',
+    description: 'En kunnskapskollektiv om degrowth, post-kapitalistiske fremtider og bærekraftig samfunnsutvikling.',
+    images: [
+      {
+        url: '/robust-logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'ROBUST Logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Foreningen ROBUST',
+    description: 'En kunnskapskollektiv om degrowth og post-kapitalistiske fremtider',
+    images: ['/robust-logo.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   icons: {
     icon: [
@@ -42,6 +83,9 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/manifest.json',
+  alternates: {
+    canonical: 'https://robust.iverfinne.no',
+  },
 }
 
 export const viewport: Viewport = {
@@ -57,8 +101,29 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Foreningen ROBUST',
+    url: 'https://robust.iverfinne.no',
+    logo: 'https://robust.iverfinne.no/robust-logo.png',
+    description: 'En kunnskapskollektiv om degrowth og post-kapitalistiske fremtider',
+    sameAs: [],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'General Inquiries',
+      availableLanguage: 'Norwegian',
+    },
+  };
+
   return (
     <html lang="no">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </head>
       <body className={`${jetbrainsMono.variable} font-sans antialiased`}>
         <AnalyticsTracker />
         {children}
