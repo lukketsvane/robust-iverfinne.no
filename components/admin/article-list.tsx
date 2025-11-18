@@ -149,8 +149,8 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
             <Card key={article.id}>
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start gap-2">
-                  <div className="flex-1 min-w-0 overflow-hidden">
-                    <CardTitle className="text-base truncate mb-2 overflow-hidden text-ellipsis whitespace-nowrap">
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="text-base mb-2 truncate">
                       {article.title}
                     </CardTitle>
                     <div className="flex gap-2 mb-1 flex-wrap">
