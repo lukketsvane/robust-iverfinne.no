@@ -339,7 +339,7 @@ function InspirationSection({ activeSection }: { activeSection: string }) {
 // Footer Component
 function Footer({ activeSection }: { activeSection: string }) {
   return (
-    <footer id="kontakt" className="bg-[#e3160b] text-white py-12 px-8">
+    <footer id="kontakt" className="bg-[#e3160b] text-white py-12 px-8 bg-[rgba(63,0,0,1)]">
       <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row gap-8 items-center justify-between">
         <div className="flex items-center gap-3">
           <Linkedin className="w-6 h-6" />

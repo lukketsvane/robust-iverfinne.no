@@ -24,13 +24,12 @@ export async function POST(request: Request) {
     // Track general page view
     const today = new Date().toISOString().split('T')[0]
     
-    // Check if entry exists for today and this path
     const { data: existing } = await supabase
       .from('site_analytics')
       .select('*')
       .eq('date', today)
       .eq('page_path', path)
-      .single()
+      .maybeSingle()
 
     if (existing) {
       // Update existing entry
