@@ -11,6 +11,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .eq('published', true)
     .order('updated_at', { ascending: false });
 
+  const { data: projects } = await supabase
+    .from('projects')
+    .select('slug, updated_at, created_at')
+    .eq('published', true)
+    .order('updated_at', { ascending: false });
+
   const baseUrl = 'https://robust.iverfinne.no';
 
   // Static pages
@@ -55,5 +61,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
-  return [...staticPages, ...articlePages];
+  const projectPages = (projects || []).map((project) => ({
+    url: `${baseUrl}/prosjekter/${project.slug}`,
+    lastModified: new Date(project.updated_at || project.created_at),
+    changeFrequency: 'monthly' as const,
+    priority: 0.85,
+  }));
+
+  return [...staticPages, ...articlePages, ...projectPages];
 }

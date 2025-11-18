@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, Linkedin, Mail } from 'lucide-react';
 import Image from "next/image";
 import Link from "next/link";
+import { NewsletterSignup } from "./newsletter-signup";
 
 // Banner Header Component
 function BannerHeader() {
@@ -310,7 +311,7 @@ function TeamSection({ teamMembers }: { teamMembers: any[] }) {
 // Inspirational Background Section
 function InspirationSection({ activeSection }: { activeSection: string }) {
   return (
-    <section className="relative min-h-[400px] flex items-center justify-center bg-[#ffc2c2]">
+    <section className="relative min-h-[600px] flex items-center justify-center bg-[#ffc2c2]">
       <div className="absolute inset-0">
         <Image
           src="/nautilus-shell.jpeg"
@@ -319,13 +320,36 @@ function InspirationSection({ activeSection }: { activeSection: string }) {
           className="object-cover opacity-40"
         />
       </div>
-      <div className="relative z-10 max-w-[800px] mx-auto px-8 py-16 text-left">
-        <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[20px] md:text-[24px] leading-relaxed mb-6 font-bold">
-          Sneglhuset er perfekt konstruert for at sneglen skal kunne bære det med sin egen muskelkraft.
-        </p>
-        <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[16px] md:text-[18px] leading-relaxed">
-          Gjennom de siste tiårene har det blitt et internasjonalt symbol for nedvekst-bevegelsen til inspirasjon for oss mennesker om å ikke bære mer enn det jorden vår - hjemmet vårt - klarer
-        </p>
+      <div className="relative z-10 max-w-[900px] mx-auto px-8 py-16">
+        <div className="mb-12">
+          <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[20px] md:text-[24px] leading-relaxed mb-6 font-bold">
+            Sneglhuset er perfekt konstruert for at sneglen skal kunne bære det med sin egen muskelkraft.
+          </p>
+          <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[16px] md:text-[18px] leading-relaxed mb-8">
+            Gjennom de siste tiårene har det blitt et internasjonalt symbol for nedvekst-bevegelsen til inspirasjon for oss mennesker om å ikke bære mer enn det jorden vår - hjemmet vårt - klarer
+          </p>
+        </div>
+        
+        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-8 space-y-6">
+          <div>
+            <h3 className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-xl font-bold mb-3">
+              Kontakt oss
+            </h3>
+            <p className="font-['JetBrains_Mono',monospace] text-gray-700 text-base">
+              E-post:{' '}
+              <a 
+                href="mailto:kontakt@foreningenrobust.no" 
+                className="text-[#e3160b] underline hover:opacity-80 transition-opacity"
+              >
+                kontakt@foreningenrobust.no
+              </a>
+            </p>
+          </div>
+          
+          <div className="border-t border-gray-200 pt-6">
+            <NewsletterSignup />
+          </div>
+        </div>
       </div>
     </section>
   );
