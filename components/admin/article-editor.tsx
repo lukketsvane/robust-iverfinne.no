@@ -13,6 +13,7 @@ import { ImageUpload } from "./image-upload";
 import { MarkdownEditor } from "./markdown-editor";
 import type { AdminUser } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
+import { Trash2 } from 'lucide-react';
 
 type Article = {
   id: string;
@@ -33,6 +34,7 @@ type ArticleEditorProps = {
 export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const supabase = createClient(); // Create supabase client once at component level
   const [title, setTitle] = useState(article?.title || "");
   const [slug, setSlug] = useState(article?.slug || "");
   const [excerpt, setExcerpt] = useState(article?.excerpt || "");
@@ -41,6 +43,7 @@ export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
   const [published, setPublished] = useState(article?.published || false);
   const [category, setCategory] = useState(article?.category || "om-oss");
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const generateSlug = (text: string) => {
     return text
@@ -70,7 +73,6 @@ export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
     }
 
     setSaving(true);
-    const supabase = createClient();
 
     const articleData = {
       title,
@@ -139,6 +141,36 @@ export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
       toast({
         title: "Lagret!",
         description: article ? "Artikkelen ble oppdatert" : "Artikkelen ble opprettet",
+      });
+      router.push("/admin");
+      router.refresh();
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!article) return;
+    
+    if (!confirm(`Er du sikker på at du vil slette "${article.title}"?`)) return;
+
+    setDeleting(true);
+
+    const { error } = await supabase
+      .from("articles")
+      .delete()
+      .eq("id", article.id);
+
+    if (error) {
+      console.error("Error deleting article:", error);
+      setDeleting(false);
+      toast({
+        title: "Feil ved sletting",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Slettet!",
+        description: "Artikkelen ble slettet",
       });
       router.push("/admin");
       router.refresh();
@@ -226,7 +258,7 @@ export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
         <div className="flex gap-4">
           <Button
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || deleting}
             className="bg-[#e3160b] hover:bg-[#c51309]"
           >
             {saving ? "Lagrer..." : "Lagre"}
@@ -234,10 +266,25 @@ export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
           <Button
             variant="outline"
             onClick={() => router.push("/admin")}
-            disabled={saving}
+            disabled={saving || deleting}
           >
             Avbryt
           </Button>
+          {article && (
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={saving || deleting}
+              className="ml-auto"
+            >
+              {deleting ? "Sletter..." : (
+                <>
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Slett artikkel
+                </>
+              )}
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>

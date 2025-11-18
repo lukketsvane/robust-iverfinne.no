@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { nb } from "date-fns/locale";
-import { Edit, Eye, Trash2, User } from 'lucide-react';
+import { Edit, Eye, User } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 type Article = {
@@ -27,10 +27,9 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
   const [articles, setArticles] = useState<Article[]>(initialArticles);
   const [filter, setFilter] = useState<string>("all");
   const { toast } = useToast();
+  const supabase = createClient();
 
   useEffect(() => {
-    const supabase = createClient();
-    
     const channel = supabase
       .channel('articles-changes')
       .on(
@@ -41,8 +40,6 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
           table: 'articles'
         },
         (payload) => {
-          console.log('[v0] Real-time article change:', payload);
-          
           if (payload.eventType === 'INSERT') {
             setArticles(prev => [payload.new as Article, ...prev]);
             toast({
@@ -71,34 +68,12 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
           }
         }
       )
-      .subscribe((status) => {
-        console.log('[v0] Realtime subscription status:', status);
-      });
+      .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []); // Empty dependency array - only subscribe once
-
-  async function deleteArticle(id: string, title: string) {
-    if (!confirm(`Er du sikker på at du vil slette "${title}"?`)) return;
-
-    const previousArticles = [...articles];
-    setArticles(prev => prev.filter(article => article.id !== id));
-
-    const supabase = createClient();
-    const { error } = await supabase.from("articles").delete().eq("id", id);
-
-    if (error) {
-      console.error("Error deleting article:", error);
-      setArticles(previousArticles);
-      toast({
-        title: "Feil ved sletting",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
-  }
+  }, [supabase]);
 
   const filteredArticles = articles.filter(article => {
     if (filter === "all") return true;
@@ -214,14 +189,6 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
                         </Link>
                       </Button>
                     )}
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => deleteArticle(article.id, article.title)}
-                      className="h-8 w-8 p-0 flex-shrink-0"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
                   </div>
                 </div>
               </CardHeader>
